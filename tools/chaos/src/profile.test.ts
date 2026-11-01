@@ -9,7 +9,7 @@ describe('loadConfig', () => {
       profile: DEFAULT_PROFILE,
       seed: 7,
     });
-    expect(DEFAULT_PROFILE).toEqual({ latencyMs: 100, jitterMs: 20, lossRate: 0.02 });
+    expect(DEFAULT_PROFILE).toEqual({ latencyMs: 50, jitterMs: 10, lossRate: 0.02 });
   });
 
   it('reads overrides from the environment', () => {

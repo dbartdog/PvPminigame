@@ -14,7 +14,8 @@ export interface ChaosConfig {
   readonly seed: number;
 }
 
-export const DEFAULT_PROFILE: ChaosProfile = { latencyMs: 100, jitterMs: 20, lossRate: 0.02 };
+/** 50 ms ±10 ms each way, so the target of 100 ms ±20 ms round trip. */
+export const DEFAULT_PROFILE: ChaosProfile = { latencyMs: 50, jitterMs: 10, lossRate: 0.02 };
 export const DEFAULT_PORT = 3002;
 export const DEFAULT_TARGET = 'ws://localhost:3001/ws';
 
