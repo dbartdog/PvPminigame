@@ -36,7 +36,7 @@ Goal: an empty-but-real game platform. By the end of the week, two browser tabs 
 
 ### 6. Network chaos mode (`tools/chaos`)
 - A WebSocket proxy (or client/server shim) that adds configurable latency, jitter and packet loss
-- Default profile: 100 ms ±20 ms, 2% loss; toggled by an env var or URL flag in dev only
+- Default profile: 100 ms ±20 ms round trip (50 ms ±10 ms each way), 2% loss; toggled by an env var or URL flag in dev only
 
 ### 7. CI (GitHub Actions)
 - On every PR: install, `pnpm check`, determinism test, bundle-size report (fail if client initial JS > 500 KB gzipped for now)

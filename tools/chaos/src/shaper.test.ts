@@ -75,18 +75,18 @@ describe('delay', () => {
     const random = createSeededRandom(2);
     for (let i = 0; i < FRAMES; i++) {
       const delay = sampleDelayMs(DEFAULT_PROFILE, random);
-      expect(delay).toBeGreaterThanOrEqual(80);
-      expect(delay).toBeLessThanOrEqual(120);
+      expect(delay).toBeGreaterThanOrEqual(40);
+      expect(delay).toBeLessThanOrEqual(60);
     }
   });
 
   it('reaches both ends of the jitter range', () => {
-    expect(sampleDelayMs(DEFAULT_PROFILE, () => 0)).toBe(80);
-    expect(sampleDelayMs(DEFAULT_PROFILE, () => 0.9999999)).toBeCloseTo(120, 3);
+    expect(sampleDelayMs(DEFAULT_PROFILE, () => 0)).toBe(40);
+    expect(sampleDelayMs(DEFAULT_PROFILE, () => 0.9999999)).toBeCloseTo(60, 3);
   });
 
   it('never goes negative when jitter is larger than latency', () => {
-    expect(sampleDelayMs({ ...DEFAULT_PROFILE, latencyMs: 5 }, () => 0)).toBe(0);
+    expect(sampleDelayMs({ ...DEFAULT_PROFILE, latencyMs: 5, jitterMs: 20 }, () => 0)).toBe(0);
   });
 });
 
@@ -102,14 +102,14 @@ describe('a full stream on the default profile', () => {
     expect(lossRate).toBeLessThan(0.022);
   });
 
-  it('adds about 100 ms on average', () => {
+  it('adds about 50 ms each way on average', () => {
     const totalDelay = delivered.reduce(
       (sum, { sentAtMs, releaseAtMs }) => sum + releaseAtMs - sentAtMs,
       0,
     );
     const meanDelay = totalDelay / delivered.length;
-    expect(meanDelay).toBeGreaterThan(99);
-    expect(meanDelay).toBeLessThan(101);
+    expect(meanDelay).toBeGreaterThan(49);
+    expect(meanDelay).toBeLessThan(52);
   });
 
   it('keeps frames in order, however large the jitter', () => {

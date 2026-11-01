@@ -67,7 +67,7 @@ docker compose up -d  # local Postgres
 
 ## Network chaos mode
 
-Every real-time feature must be tested with simulated 100 ms latency, ±20 ms jitter and 2% packet loss (`tools/chaos`). A feature that only works on localhost is not done.
+Every real-time feature must be tested with simulated 100 ms round-trip latency, ±20 ms jitter and 2% packet loss (`tools/chaos`). A feature that only works on localhost is not done.
 
 ## Style
 
