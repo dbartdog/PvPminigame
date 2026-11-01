@@ -28,6 +28,8 @@ pnpm dev                # client on http://localhost:5173, plus the server
 
 Before opening a pull request, run `pnpm check`. It runs typecheck, lint, tests and the production build. See `CLAUDE.md` for the other commands.
 
+Testing a duel alone? Open the second player in a private window. Normal tabs share an identity, so they count as one player.
+
 ## Assets
 
 All art, audio and names are original or properly licensed. Every asset needs a row in `assets/LICENSES.csv`. No assets from existing games.
