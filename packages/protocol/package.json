@@ -7,6 +7,9 @@
   "scripts": {
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "@pvp/sim": "workspace:*"
+  },
   "devDependencies": {
     "typescript": "catalog:"
   }

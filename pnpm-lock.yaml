@@ -221,6 +221,9 @@ importers:
       '@pvp/sim':
         specifier: workspace:*
         version: link:../../packages/sim
+      uWebSockets.js:
+        specifier: github:uNetworking/uWebSockets.js#ea0d00dd9a45b76fa89a9609116973fe5794fc3c
+        version: https://codeload.github.com/uNetworking/uWebSockets.js/tar.gz/ea0d00dd9a45b76fa89a9609116973fe5794fc3c
     devDependencies:
       '@types/node':
         specifier: ^26.6.6
@@ -236,6 +239,10 @@ importers:
         version: 8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(tsx@4.23.15)
 
   packages/protocol:
+    dependencies:
+      '@pvp/sim':
+        specifier: workspace:*
+        version: link:../sim
     devDependencies:
       typescript:
         specifier: 'catalog:'
@@ -1111,6 +1118,10 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  uWebSockets.js@https://codeload.github.com/uNetworking/uWebSockets.js/tar.gz/ea0d00dd9a45b76fa89a9609116973fe5794fc3c:
+    resolution: {gitHosted: true, integrity: sha512-aSTlb7JBj+dTMUqgLXLcWZkbzoCldhNAHE3X8admwzgGWp/GZ+NHDmgaGsYokyWs+J/Ff+yz1J+59PluSgQqOQ==, tarball: https://codeload.github.com/uNetworking/uWebSockets.js/tar.gz/ea0d00dd9a45b76fa89a9609116973fe5794fc3c}
+    version: 20.71.0
+
   undici-types@8.9.0:
     resolution: {integrity: sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==}
 
@@ -1945,6 +1956,8 @@ snapshots:
       - supports-color
 
   typescript@6.0.3: {}
+
+  uWebSockets.js@https://codeload.github.com/uNetworking/uWebSockets.js/tar.gz/ea0d00dd9a45b76fa89a9609116973fe5794fc3c: {}
 
   undici-types@8.9.0: {}
 
