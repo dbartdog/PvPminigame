@@ -7,6 +7,8 @@ pnpm dev     # client and server
 pnpm chaos   # proxy on ws://localhost:3002/ws, forwarding to ws://localhost:3001/ws
 ```
 
+Open <http://localhost:5173/?chaos=1> and start a challenge. The flag stays on through the room and in the copied link, so your friend's tab is under chaos too. It only exists in development: production builds don't contain it.
+
 | Variable             | Default                  | Meaning                                       |
 | -------------------- | ------------------------ | --------------------------------------------- |
 | `CHAOS_PORT`         | `3002`                   | Port the proxy listens on                     |

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'preact/hooks';
 import { parseRoomCode, roomPath } from '../net/roomCode';
+import { chaosSearch } from '../net/serverUrl';
 import { Home } from './Home';
 import { Room } from './Room';
 
@@ -17,7 +18,7 @@ export function App() {
   }, []);
 
   function openRoom(newCode: string): void {
-    window.history.pushState(null, '', roomPath(newCode));
+    window.history.pushState(null, '', roomPath(newCode) + chaosSearch(window.location));
     setCode(newCode);
   }
 

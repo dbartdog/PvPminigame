@@ -402,6 +402,63 @@ describe('simulation', () => {
   });
 });
 
+describe('lost frames', () => {
+  function lastPingTimestamp(client: Client): number {
+    const ping = ofType(client, MessageType.Ping).at(-1);
+    if (!ping) throw new Error('Expected a Ping');
+    return ping.timestampMs;
+  }
+
+  it('keeps a player seated through a long run of lost Pongs', () => {
+    const code = createRoom();
+    const ada = joined('Ada', code);
+    joined('Grace', code);
+    runFor(PULSE_INTERVAL_MS * 60);
+    expect(ada.closed).toBe(false);
+    expect(lastRoomState(ada).players).toHaveLength(2);
+    expect(lastErrorCode(ada)).toBeUndefined();
+  });
+
+  it('recovers RTT on the first Pong after a long run of lost ones', () => {
+    const client = joined('Ada', createRoom());
+    runFor(PULSE_INTERVAL_MS * 60);
+    const timestampMs = lastPingTimestamp(client);
+    nowMs = timestampMs + 200;
+    client.say({ type: MessageType.Pong, timestampMs });
+    expect(client.session.rttMs).toBe(200);
+  });
+
+  it('measures the next Ping correctly when one Pong in the middle is lost', () => {
+    const client = joined('Ada', createRoom());
+    nowMs += 100;
+    client.say({ type: MessageType.Pong, timestampMs: lastPingTimestamp(client) });
+    runFor(PULSE_INTERVAL_MS);
+    const lost = lastPingTimestamp(client);
+    runFor(PULSE_INTERVAL_MS);
+    const next = lastPingTimestamp(client);
+    expect(next).not.toBe(lost);
+    nowMs = next + 220;
+    client.say({ type: MessageType.Pong, timestampMs: next });
+    expect(client.session.rttMs).toBe(220);
+  });
+
+  it('keeps applying the last input until a newer one arrives', () => {
+    const client = joined('Ada', createRoom());
+    client.say({ type: MessageType.Input, tick: 0, payload: encodeToyInput({ x: 1, y: 0 }) });
+    runFor(200);
+    const early = decodeToySnapshot(lastSnapshot(client).payload)?.dots[0].x ?? 0;
+    runFor(200);
+    const late = decodeToySnapshot(lastSnapshot(client).payload)?.dots[0].x ?? 0;
+    expect(late).toBeGreaterThan(early);
+
+    client.say({ type: MessageType.Input, tick: 0, payload: encodeToyInput({ x: 0, y: 0 }) });
+    runFor(100);
+    const stopped = decodeToySnapshot(lastSnapshot(client).payload)?.dots[0].x;
+    runFor(200);
+    expect(decodeToySnapshot(lastSnapshot(client).payload)?.dots[0].x).toBe(stopped);
+  });
+});
+
 describe('RTT', () => {
   it('pings straight after Welcome and then about once a second', () => {
     const client = connect();
