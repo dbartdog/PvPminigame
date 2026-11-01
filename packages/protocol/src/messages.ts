@@ -17,6 +17,8 @@ export const ErrorCode = {
   MalformedMessage: 2,
   RoomNotFound: 3,
   RoomFull: 4,
+  /** The same player joined from elsewhere. Clients should not reconnect automatically. */
+  SessionReplaced: 5,
 } as const;
 
 export type ErrorCode = (typeof ErrorCode)[keyof typeof ErrorCode];
