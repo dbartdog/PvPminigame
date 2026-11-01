@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "pnpm --parallel --filter \"./apps/*\" dev",
+    "chaos": "pnpm --filter @pvp/chaos start",
     "test": "vitest run",
     "typecheck": "pnpm -r typecheck",
     "lint": "eslint . && prettier --check .",

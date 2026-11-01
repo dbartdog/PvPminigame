@@ -4,7 +4,7 @@ import { createConnection, type Connection, type SocketLike } from '../net/conne
 import { opponent, ownPlayer, type ConnectionState } from '../net/connectionState';
 import { guestName, loadDeviceToken, loadName, saveDeviceToken, saveName } from '../net/identity';
 import { roomLink } from '../net/roomCode';
-import { serverUrl } from '../net/serverUrl';
+import { chaosSearch, serverUrl } from '../net/serverUrl';
 import { DebugOverlay } from './DebugOverlay';
 import { formatMs } from './frameStats';
 import { SceneCanvas } from './SceneCanvas';
@@ -141,7 +141,11 @@ function ActiveRoom({ code, onRetry }: { code: string; onRetry: () => void }) {
   if (state.status === 'failed') return <Failure text={state.errorText} onRetry={onRetry} />;
   if (state.status === 'joined') {
     return (
-      <Joined connection={connection} state={state} link={roomLink(window.location.origin, code)} />
+      <Joined
+        connection={connection}
+        state={state}
+        link={roomLink(window.location.origin, code) + chaosSearch(window.location)}
+      />
     );
   }
   return (
