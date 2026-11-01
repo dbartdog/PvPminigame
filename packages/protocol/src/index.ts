@@ -15,3 +15,10 @@ export {
   type SnapshotMessage,
   type WelcomeMessage,
 } from './messages';
+export {
+  decodeToyInput,
+  decodeToySnapshot,
+  encodeToyInput,
+  encodeToySnapshot,
+  type ToySnapshot,
+} from './toy';

@@ -4,13 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch --env-file-if-exists=../../.env src/index.ts",
     "typecheck": "tsc --noEmit",
     "build": "vite build --ssr src/index.ts --outDir dist"
   },
   "dependencies": {
     "@pvp/protocol": "workspace:*",
-    "@pvp/sim": "workspace:*"
+    "@pvp/sim": "workspace:*",
+    "uWebSockets.js": "github:uNetworking/uWebSockets.js#ea0d00dd9a45b76fa89a9609116973fe5794fc3c"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
