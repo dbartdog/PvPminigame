@@ -14,18 +14,19 @@ Fast 1v1 PvP games in the browser. Send a friend a link, settle it heads up in s
 
 ## Getting started (Windows 11 + WSL2)
 
-Prerequisites inside Ubuntu: Node.js LTS (via fnm), pnpm (via `corepack enable`), Git + Git LFS, Docker Desktop with WSL integration on.
+Prerequisites inside Ubuntu: Node.js LTS (via fnm), pnpm (`npm install -g pnpm`), Git + Git LFS, Docker Desktop with WSL integration on. Node 25 and later no longer include Corepack, so `corepack enable` won't work here.
 
 ```bash
 git clone https://github.com/dbartdog/PvPminigame.git ~/code/PvPminigame
 cd ~/code/PvPminigame
 git lfs install
-pnpm install        # available after Phase 0
-docker compose up -d
-pnpm dev
+pnpm install
+cp .env.example .env    # optional: local overrides
+docker compose up -d    # local Postgres
+pnpm dev                # client on http://localhost:5173, plus the server
 ```
 
-The real commands land with the Phase 0 scaffold; see `CLAUDE.md` for the full list.
+Before opening a pull request, run `pnpm check`. It runs typecheck, lint, tests and the production build. See `CLAUDE.md` for the other commands.
 
 ## Assets
 

@@ -1,0 +1,19 @@
+{
+  "name": "@pvp/client",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc --noEmit",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@pvp/protocol": "workspace:*",
+    "@pvp/sim": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@pvp/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "vite build --ssr src/index.ts --outDir dist"
+  },
+  "dependencies": {
+    "@pvp/protocol": "workspace:*",
+    "@pvp/sim": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}
