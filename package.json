@@ -13,7 +13,8 @@
     "typecheck": "pnpm -r typecheck",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
-    "build": "pnpm -r --if-present build",
+    "build": "pnpm -r --if-present build && pnpm bundle-size",
+    "bundle-size": "pnpm --filter @pvp/bundle-size report",
     "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build"
   },
   "devDependencies": {
