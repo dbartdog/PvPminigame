@@ -17,8 +17,3 @@ function axis(pressed: ReadonlySet<string>, negative: string[], positive: string
 export function toyInputFromKeys(pressed: ReadonlySet<string>): ToyInput {
   return { x: axis(pressed, LEFT, RIGHT), y: axis(pressed, UP, DOWN) };
 }
-
-/** Wire format: int8 x, int8 y. */
-export function encodeToyInput(input: ToyInput): Uint8Array {
-  return new Uint8Array(new Int8Array([input.x, input.y]).buffer);
-}

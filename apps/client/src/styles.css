@@ -110,6 +110,8 @@ button:disabled {
   inset: 0;
   width: 100%;
   height: 100%;
+  /* The menus sit on top of the scene and need to stay readable. */
+  opacity: 0.3;
 }
 
 .debug-overlay {

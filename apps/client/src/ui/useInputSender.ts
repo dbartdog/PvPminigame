@@ -1,6 +1,7 @@
+import { encodeToyInput } from '@pvp/protocol';
 import { TICK_RATE_HZ, advanceTimestep, createTimestep } from '@pvp/sim';
 import { useEffect, useRef } from 'preact/hooks';
-import { encodeToyInput, toyInputFromKeys } from '../input/toyInput';
+import { toyInputFromKeys } from '../input/toyInput';
 import type { Connection } from '../net/connection';
 import { useFrameLoop } from './useFrameLoop';
 

@@ -4,6 +4,7 @@ import {
   PROTOCOL_VERSION,
   decodeMessage,
   encodeMessage,
+  encodeToySnapshot,
   type Message,
 } from '@pvp/protocol';
 import { describe, expect, it, vi } from 'vitest';
@@ -111,6 +112,25 @@ describe('staying connected', () => {
     expect(snapshotAgeMs(connection.getState(), 1033)).toBe(33);
   });
 
+  it('keeps the decoded dots and pickup from a snapshot', () => {
+    const { connection, receive } = setup();
+    const snapshot = {
+      dots: [
+        { x: 1, y: 2, score: 3 },
+        { x: 4, y: 5, score: 6 },
+      ],
+      pickup: { x: 7, y: 8 },
+    } as const;
+    receive({ type: MessageType.Snapshot, tick: 1, payload: encodeToySnapshot(snapshot) });
+    expect(connection.getState().snapshot).toEqual(snapshot);
+  });
+
+  it('still tracks the tick when a snapshot payload is unreadable', () => {
+    const { connection, receive } = setup();
+    receive({ type: MessageType.Snapshot, tick: 9, payload: new Uint8Array([1]) });
+    expect(connection.getState()).toMatchObject({ tick: 9, snapshot: null });
+  });
+
   it('has no snapshot age before the first snapshot', () => {
     expect(snapshotAgeMs(setup().connection.getState(), 1000)).toBeNull();
   });
@@ -152,11 +172,27 @@ describe('failures', () => {
     [ErrorCode.RoomNotFound, "That room doesn't exist or has expired."],
     [ErrorCode.VersionMismatch, 'A new version is out. Refresh the page to update.'],
     [ErrorCode.MalformedMessage, 'Something went wrong. Try again.'],
+    [ErrorCode.SessionReplaced, "You're playing in another tab or device now."],
   ])('shows friendly text for error code %i and closes', (code, text) => {
     const { connection, socket, receive } = setup();
     receive({ type: MessageType.Error, code, message: 'raw server text' });
     expect(connection.getState()).toMatchObject({ status: 'failed', errorText: text });
     expect(socket.close).toHaveBeenCalled();
+  });
+
+  it('never reconnects by itself after being replaced, or two tabs would fight over the seat', () => {
+    const fake = createFakeSocket();
+    const createSocket = vi.fn(() => fake.socket);
+    createConnection({
+      createSocket,
+      name: 'Ada',
+      deviceToken: 'token.old',
+      roomCode: 'XK7P2M',
+      onDeviceToken: vi.fn(),
+    });
+    fake.receive({ type: MessageType.Error, code: ErrorCode.SessionReplaced, message: 'x' });
+    fake.socket.onclose?.();
+    expect(createSocket).toHaveBeenCalledOnce();
   });
 
   it('reports a lost connection', () => {

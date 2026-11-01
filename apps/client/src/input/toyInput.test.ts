@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { encodeToyInput, toyInputFromKeys } from './toyInput';
+import { toyInputFromKeys } from './toyInput';
 
 describe('toyInputFromKeys', () => {
   it('stands still with nothing pressed', () => {
@@ -13,11 +13,5 @@ describe('toyInputFromKeys', () => {
 
   it('cancels out opposite keys', () => {
     expect(toyInputFromKeys(new Set(['ArrowLeft', 'KeyD']))).toEqual({ x: 0, y: 0 });
-  });
-});
-
-describe('encodeToyInput', () => {
-  it('writes x then y as signed bytes', () => {
-    expect([...encodeToyInput({ x: -1, y: 1 })]).toEqual([0xff, 1]);
   });
 });

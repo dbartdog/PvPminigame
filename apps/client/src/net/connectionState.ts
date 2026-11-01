@@ -1,4 +1,11 @@
-import { ErrorCode, MessageType, type Message, type RoomPlayer } from '@pvp/protocol';
+import {
+  ErrorCode,
+  MessageType,
+  decodeToySnapshot,
+  type Message,
+  type RoomPlayer,
+  type ToySnapshot,
+} from '@pvp/protocol';
 
 export type ConnectionStatus = 'connecting' | 'joining' | 'joined' | 'failed';
 
@@ -8,6 +15,7 @@ export interface ConnectionState {
   readonly players: readonly RoomPlayer[];
   readonly tick: number | null;
   readonly lastSnapshotAtMs: number | null;
+  readonly snapshot: ToySnapshot | null;
   readonly errorText: string | null;
 }
 
@@ -17,6 +25,7 @@ export const initialConnectionState: ConnectionState = {
   players: [],
   tick: null,
   lastSnapshotAtMs: null,
+  snapshot: null,
   errorText: null,
 };
 
@@ -27,6 +36,7 @@ const ERROR_TEXT: Record<ErrorCode, string> = {
   [ErrorCode.MalformedMessage]: 'Something went wrong. Try again.',
   [ErrorCode.RoomNotFound]: "That room doesn't exist or has expired.",
   [ErrorCode.RoomFull]: 'This room is full.',
+  [ErrorCode.SessionReplaced]: "You're playing in another tab or device now.",
 };
 
 export function applyMessage(
@@ -41,7 +51,12 @@ export function applyMessage(
     case MessageType.RoomState:
       return { ...state, status: 'joined', players: message.players };
     case MessageType.Snapshot:
-      return { ...state, tick: message.tick, lastSnapshotAtMs: nowMs };
+      return {
+        ...state,
+        tick: message.tick,
+        lastSnapshotAtMs: nowMs,
+        snapshot: decodeToySnapshot(message.payload) ?? state.snapshot,
+      };
     case MessageType.Error:
       return { ...state, status: 'failed', errorText: ERROR_TEXT[message.code] };
     default:
